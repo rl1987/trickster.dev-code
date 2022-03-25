@@ -12,25 +12,12 @@ provider "digitalocean" {
 }
 
 resource "digitalocean_droplet" "n8n" {
-  image  = "debian-11-x64"
-  name   = "n8n"
-  region = "sfo3"
-  size   = "s-1vcpu-1gb"
-  # Make sure this matches your SSH key fingerprint at:
-  # https://cloud.digitalocean.com/account/security
-  ssh_keys = ["[REDACTED]"]
-
-  connection {
-    host        = self.ipv4_address
-    user        = "root"
-    type        = "ssh"
-    timeout     = "2m"
-    private_key = file("~/.ssh/id_rsa")
-  }
-
-  provisioner "remote-exec" {
-    script = "provision.sh"
-  }
+  image     = "debian-11-x64"
+  name      = "n8n"
+  region    = "sfo3"
+  size      = "s-1vcpu-1gb"
+  user_data = file("provision.sh")
+  ssh_keys  = ["[REDACTED]"]
 }
 
 output "server_ip" {
