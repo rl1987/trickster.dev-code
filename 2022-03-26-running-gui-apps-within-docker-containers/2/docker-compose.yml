@@ -3,7 +3,7 @@ services:
   firefox:
     image: firefox
     environment:
-      - DISPLAY=novnc:0.0
+      - DISPLAY=novnc:0
     depends_on:
       - novnc
     networks:
