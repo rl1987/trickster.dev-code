@@ -1,0 +1,14 @@
+abuse
+noc
+security
+postmaster
+hostmaster
+usenet
+news
+webmaster
+www
+uucp
+ftp
+support
+info
+sales
