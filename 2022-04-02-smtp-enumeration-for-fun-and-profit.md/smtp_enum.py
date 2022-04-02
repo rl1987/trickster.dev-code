@@ -9,8 +9,8 @@ import dns.resolver  # requires dnspython
 def make_smtp_conn(smtp_hostname):
     conn = smtplib.SMTP(smtp_hostname)
 
-    conn.helo("test.example.org")
-    conn.mail("FROM: <a@example.org>")
+    conn.helo("gmail.com")
+    conn.mail("FROM: <a@gmail.com>")
 
     return conn
 
