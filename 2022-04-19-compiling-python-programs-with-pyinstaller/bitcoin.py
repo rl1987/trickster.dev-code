@@ -2,11 +2,22 @@
 
 from tkinter import *
 from datetime import datetime
+import sys
+import os
 
 import requests
 from lxml import html
 
 previous = None
+
+def resource_path(relative_path):
+    try:
+    # PyInstaller creates a temp folder and stores path in _MEIPASS
+        base_path = sys._MEIPASS
+    except Exception:
+        base_path = os.path.abspath(".")
+
+    return os.path.join(base_path, relative_path)
 
 # Grab the bitcoin price
 def Update():
@@ -77,7 +88,7 @@ def main():
     my_frame = Frame(root, bg="black")
     my_frame.pack(pady=20)
 
-    logo = PhotoImage(file="images/bitcoin.png")
+    logo = PhotoImage(file=resource_path("images/bitcoin.png"))
     logo_label = Label(my_frame, image=logo, bd=0)
     logo_label.grid(row=0, column=0, rowspan=2)
 
