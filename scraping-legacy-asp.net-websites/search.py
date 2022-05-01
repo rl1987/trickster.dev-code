@@ -1,29 +1,7 @@
 import requests
 
 cookies = {
-    "ASP.NET_SessionId": "5zbmmioup1jtvyidmrllbk3y",
     "DISCLAIMER": "1",
-}
-
-headers = {
-    "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9",
-    "Accept-Language": "en-GB,en-US;q=0.9,en;q=0.8",
-    "Cache-Control": "max-age=0",
-    "Connection": "keep-alive",
-    "Content-Type": "application/x-www-form-urlencoded",
-    # Requests sorts cookies= alphabetically
-    # 'Cookie': 'ASP.NET_SessionId=5zbmmioup1jtvyidmrllbk3y; DISCLAIMER=1',
-    "Origin": "https://publicaccess.claytoncountyga.gov",
-    "Referer": "https://publicaccess.claytoncountyga.gov/search/advancedsearch.aspx?mode=advanced",
-    "Sec-Fetch-Dest": "document",
-    "Sec-Fetch-Mode": "navigate",
-    "Sec-Fetch-Site": "same-origin",
-    "Sec-Fetch-User": "?1",
-    "Upgrade-Insecure-Requests": "1",
-    "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/100.0.4896.127 Safari/537.36",
-    "sec-ch-ua": '" Not A;Brand";v="99", "Chromium";v="100", "Google Chrome";v="100"',
-    "sec-ch-ua-mobile": "?0",
-    "sec-ch-ua-platform": '"macOS"',
 }
 
 params = {
@@ -51,23 +29,7 @@ data = {
     ],
     "hdSelectAllChecked": ["false"],
     "sCriteria": ["9"],
-    "ctl01_cal1_dateInput_ClientState": [
-        '{"enabled":true,"emptyMessage":"","validationText":"","valueAsString":"","minDateStr":"1900-01-01-00-00-00","maxDateStr":"2099-12-31-00-00-00","lastSetTextBoxValue":""}'
-    ],
-    "ctl01_cal1_calendar_SD": ["[]"],
-    "ctl01_cal1_calendar_AD": ["[[1900,1,1],[2099,12,30],[2022,5,1]]"],
-    "ctl01_cal1_ClientState": [
-        '{"minDateStr":"1900-01-01-00-00-00","maxDateStr":"2099-12-31-00-00-00"}'
-    ],
     "txtCrit": ["1000000"],
-    "ctl01_cal2_dateInput_ClientState": [
-        '{"enabled":true,"emptyMessage":"","validationText":"","valueAsString":"","minDateStr":"1900-01-01-00-00-00","maxDateStr":"2099-12-31-00-00-00","lastSetTextBoxValue":""}'
-    ],
-    "ctl01_cal2_calendar_SD": ["[]"],
-    "ctl01_cal2_calendar_AD": ["[[1900,1,1],[2099,12,30],[2022,5,1]]"],
-    "ctl01_cal2_ClientState": [
-        '{"minDateStr":"1900-01-01-00-00-00","maxDateStr":"2099-12-31-00-00-00"}'
-    ],
     "txtCrit2": ["2000000"],
     "txCriterias": ["9"],
     "selSortBy": ["PARID"],
@@ -78,7 +40,6 @@ response = requests.post(
     "https://publicaccess.claytoncountyga.gov/search/advancedsearch.aspx",
     params=params,
     cookies=cookies,
-    headers=headers,
     data=data,
 )
 
