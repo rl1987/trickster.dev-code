@@ -51,7 +51,12 @@ class ClaytonSpider(scrapy.Spider):
         del form_data["rptname"]
         del form_data["pins"]
 
-        for tr in response.xpath('//tr[@class="SearchResults"]'):
+        rows = response.xpath('//tr[@class="SearchResults"]')
+
+        if len(rows) == 0:
+            return
+
+        for tr in rows:
             form_data_details = dict(form_data)
             
             onclick = tr.attrib.get("onclick")
@@ -60,24 +65,54 @@ class ClaytonSpider(scrapy.Spider):
             rel_url = onclick.replace("javascript:selectSearchRow('", "").replace("')", "")
 
             form_data_details['hdLink'] = rel_url
+            form_data_details['hdAction'] = 'Link'
     
-            self.logger.debug(form_data)
-            yield FormRequest(url=response.url, formdata=form_data, callback=self.parse_details)
+            self.logger.debug(form_data_details)
+            yield FormRequest(url=response.url, formdata=form_data_details, callback=self.parse_details)
 
         next_page_link = response.xpath('//a[./font/b[text() = "Next >>"]]')
-        if next_page_link is not None:
+        if next_page_link is not None and form_data.get("PageNum") is not None:
             form_data_next_page = dict(form_data)
 
             onclick = next_page_link.attrib.get('onclick')
             self.logger.debug("onclick: " + onclick)
 
             pg_num = onclick.replace("GoToPage(", "").replace(")", "")
-
-            form_data_next_page["PageNum"] = pg_num
+            form_data_next_page["PageNum"] = pg_num  #str(int(form_data_next_page["PageNum"]) + 1)
+            form_data_next_page["PageSize"] = '15'
+            form_data_next_page['hdIndex'] = '0'
+            form_data_next_page['hdAction'] = 'NewPage'
     
             self.logger.debug(form_data_next_page)
             yield FormRequest(url=response.url, formdata=form_data_next_page, callback=self.parse_search_results)
         
     def parse_details(self, response):
-        pass
+        property_id = response.xpath('//td[@class="DataletHeaderTop" and contains(text(), "PARID")]/text()').get().strip().replace("PARID: ", "")
+        owner = response.xpath('//td[@class="DataletHeaderBottom" and @align="left"]/text()').get()
+        address = response.xpath('//td[@class="DataletHeaderBottom" and @align="right"]/text()').get()
+
+        tax_rows = response.xpath('//table[@id="Tax (Penalties and Interest Included through Current Date)"]//tr')
+
+        self.logger.debug(tax_rows)
+        
+        for tax_row in tax_rows:
+            tax_year = tax_row.xpath('./td[1]/text()').get()
+            if tax_year == "Year" or tax_year is None:
+                continue
+
+            tax_billed = tax_row.xpath('./td[2]/text()').get()
+            tax_paid = tax_row.xpath('./td[3]/text()').get()
+            tax_due = tax_row.xpath('./td[4]/text()').get()
+
+            item = {
+                'property_id': property_id,
+                'owner': owner,
+                'address': address,
+                'tax_year': tax_year,
+                'tax_billed': tax_billed,
+                'tax_paid': tax_paid,
+                'tax_due': tax_due
+            }
+
+            yield item
 
