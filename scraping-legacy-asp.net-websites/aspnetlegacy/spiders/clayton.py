@@ -41,6 +41,10 @@ class ClaytonSpider(scrapy.Spider):
         form_data["hdCriteria"] = "price|{}~{}".format(MIN_PRICE, MAX_PRICE)
         form_data["txtCrit"] = MIN_PRICE
         form_data["txtCrit2"] = MAX_PRICE
+        form_data["sCriteria"] = "9"
+        form_data["hdSelectAllChecked"] = "false"
+        form_data["selSortBy"] = "PARID"
+        form_data["selSortDir"] = "asc"
 
         self.logger.debug(form_data)
         yield FormRequest(url=response.url, formdata=form_data, callback=self.parse_search_results)
