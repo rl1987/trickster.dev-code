@@ -8,7 +8,7 @@ from pprint import pprint
 import instauto.api.actions.structs.friendships as fs
 from instauto.api.client import ApiClient
 from instauto.helpers.friendships import get_followers
-from instauto.helpers.search import search_username, get_user_id_from_username
+from instauto.helpers.search import get_user_id_from_username
 import instauto.api.actions.structs.profile as pr
 
 
