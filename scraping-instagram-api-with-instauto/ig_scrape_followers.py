@@ -63,6 +63,8 @@ def main():
 
     for f in followers:
         pprint(f)
+        if f.get("linked_fb_info") is not None:
+            del f['linked_fb_info']
         csv_writer.writerow(f)
 
     out_f.close()
