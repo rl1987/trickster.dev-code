@@ -9,6 +9,7 @@ import instauto.api.actions.structs.friendships as fs
 from instauto.api.client import ApiClient
 from instauto.helpers.friendships import get_followers
 from instauto.helpers.search import search_username, get_user_id_from_username
+import instauto.api.actions.structs.profile as pr
 
 def main():
     if len(sys.argv) != 2:
@@ -66,6 +67,28 @@ def main():
         if f.get("linked_fb_info") is not None:
             del f['linked_fb_info']
         csv_writer.writerow(f)
+
+    out_f.close()
+
+    out_f = open("follower_infos.csv", "w", encoding="utf-8")
+
+    csv_writer = csv.DictWriter(out_f, fieldnames=["username", "pk", "biography", "public_email", "public_phone_number"], lineterminator="\n")
+    csv_writer.writeheader()
+
+    for f in followers:
+        print("Getting profile details for {}...".format(f.get("username")))
+        user_id = f.get("pk")
+        obj = pr.Info(user_id)
+        fi = client.profile_info(obj)
+        
+        if type(fi) == dict:
+            csv_writer.writerow({
+                "username": fi.get("username"),
+                "pk": fi.get("pk"),
+                "biography": fi.get("biography"),
+                "public_email": fi.get("public_email"),
+                "public_phone_number": fi.get("public_phone_number")
+            })
 
     out_f.close()
 
