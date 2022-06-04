@@ -9,20 +9,18 @@ import requests
 
 API_TOKEN = None
 
+
 def check_if_present(store_name, title, asin):
-    headers = {
-        'Content-Type': 'application/json',
-        'X-Shopify-Access-Token': API_TOKEN
-    }
-    
-    api_url = "https://{}.myshopify.com/admin/api/2022-04/products.json".format(store_name)
-    
-    params = {
-        'title': title
-    }
+    headers = {"Content-Type": "application/json", "X-Shopify-Access-Token": API_TOKEN}
+
+    api_url = "https://{}.myshopify.com/admin/api/2022-04/products.json".format(
+        store_name
+    )
+
+    params = {"title": title}
 
     resp = requests.get(api_url, headers=headers, params=params, timeout=10)
-    
+
     json_dict = resp.json()
 
     if json_dict.get("products") is None or len(json_dict.get("products")) == 0:
@@ -35,31 +33,33 @@ def check_if_present(store_name, title, asin):
 
     return False
 
+
 def import_product(store_name, product):
-    headers = {
-        'Content-Type': 'application/json',
-        'X-Shopify-Access-Token': API_TOKEN
-    }
-    
-    api_url = "https://{}.myshopify.com/admin/api/2022-04/products.json".format(store_name)
+    headers = {"Content-Type": "application/json", "X-Shopify-Access-Token": API_TOKEN}
+
+    api_url = "https://{}.myshopify.com/admin/api/2022-04/products.json".format(
+        store_name
+    )
 
     payload = {
-        'product': {
-            'title': product.get('title'),
-            'body_html': product.get('product_details'),
-            'vendor': product.get('brand', '').replace("Visit the ", "").replace(" Store", ""),
-            'tags': product.get('breadcrumbs', '').split("/"),
-            'published': True,
-            'options': [
-                {'name': 'Size'},
+        "product": {
+            "title": product.get("title"),
+            "body_html": product.get("product_details"),
+            "vendor": product.get("brand", "")
+            .replace("Visit the ", "")
+            .replace(" Store", ""),
+            "tags": product.get("breadcrumbs", "").split("/"),
+            "published": True,
+            "options": [
+                {"name": "Size"},
             ],
-            'product_type': 'Shoes',
-            'images': [],
-            'variants': [
+            "product_type": "Shoes",
+            "images": [],
+            "variants": [
                 {
-                    'sku': product.get('asin'),
-                    'price': product.get('price').split(" - ")[-1].replace("£", ""),
-                    'requires_shipping': True,
+                    "sku": product.get("asin"),
+                    "price": product.get("price").split(" - ")[-1].replace("£", ""),
+                    "requires_shipping": True,
                 }
             ],
         }
@@ -67,11 +67,13 @@ def import_product(store_name, product):
 
     i = 1
 
-    for img_url in json.loads(product.get('images_list')):
-        payload['product']['images'].append({
-            'src': img_url,
-            'position': i,
-        })
+    for img_url in json.loads(product.get("images_list")):
+        payload["product"]["images"].append(
+            {
+                "src": img_url,
+                "position": i,
+            }
+        )
 
         i += 1
 
@@ -97,16 +99,19 @@ def main():
     in_f = open("amazon_uk_shoes_dataset.csv", "r")
 
     csv_reader = csv.DictReader(in_f)
-    
+
     for row in csv_reader:
         if row.get("price") == "":
             continue
 
-        if not check_if_present(store_name, row.get('title'), row.get('asin')):
+        if not check_if_present(store_name, row.get("title"), row.get("asin")):
             import_product(store_name, row)
         else:
-            print("{} ({}) already present - skipping...".format(row.get('title'), 
-                row.get('asin')))
+            print(
+                "{} ({}) already present - skipping...".format(
+                    row.get("title"), row.get("asin")
+                )
+            )
 
         time.sleep(0.5)
 
@@ -115,4 +120,3 @@ def main():
 
 if __name__ == "__main__":
     main()
-
