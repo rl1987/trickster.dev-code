@@ -1,0 +1,207 @@
+{
+  "name": "My workflow",
+  "nodes": [
+    {
+      "parameters": {},
+      "name": "Start",
+      "type": "n8n-nodes-base.start",
+      "typeVersion": 1,
+      "position": [
+        -400,
+        700
+      ]
+    },
+    {
+      "parameters": {
+        "command": "python3 /vagrant/csv_to_xlsx.py /vagrant/trickster.dev-code/2022-02-13-introduction-to-scrapy-framework/books_to_scrape/books.csv"
+      },
+      "name": "Convert to XLSX",
+      "type": "n8n-nodes-base.executeCommand",
+      "typeVersion": 1,
+      "position": [
+        60,
+        280
+      ],
+      "notesInFlow": true,
+      "notes": "Runs Pandas-based script to convert CSV to XSLX."
+    },
+    {
+      "parameters": {
+        "command": "cd /vagrant/trickster.dev-code/2022-02-13-introduction-to-scrapy-framework/books_to_scrape/ && scrapy runspider books_to_scrape/spiders/books.py -o books.csv -s LOG_ENABLED=False"
+      },
+      "name": "Run Scrapy Spider",
+      "type": "n8n-nodes-base.executeCommand",
+      "typeVersion": 1,
+      "position": [
+        -160,
+        280
+      ],
+      "retryOnFail": true
+    },
+    {
+      "parameters": {
+        "resource": "mail",
+        "fromEmail": "[REDACTED]",
+        "fromName": "No Reply",
+        "toEmail": "[REDACTED]",
+        "subject": "Test",
+        "contentValue": "Data has been scraped!",
+        "additionalFields": {
+          "attachments": "data"
+        }
+      },
+      "name": "SendGrid",
+      "type": "n8n-nodes-base.sendGrid",
+      "typeVersion": 1,
+      "position": [
+        440,
+        280
+      ],
+      "credentials": {
+        "sendGridApi": {
+          "id": "1",
+          "name": "SendGrid account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "filePath": "/vagrant/trickster.dev-code/2022-02-13-introduction-to-scrapy-framework/books_to_scrape/books.xlsx"
+      },
+      "name": "Read Binary File",
+      "type": "n8n-nodes-base.readBinaryFile",
+      "typeVersion": 1,
+      "position": [
+        260,
+        280
+      ]
+    },
+    {
+      "parameters": {
+        "operation": "upload",
+        "bucketName": "n8ntest35235098",
+        "fileName": "books.xlsx",
+        "binaryPropertyName": "=data",
+        "additionalFields": {}
+      },
+      "name": "S3",
+      "type": "n8n-nodes-base.s3",
+      "typeVersion": 1,
+      "position": [
+        440,
+        460
+      ],
+      "credentials": {
+        "s3": {
+          "id": "3",
+          "name": "S3 account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "triggerTimes": {
+          "item": [
+            {
+              "hour": 0
+            }
+          ]
+        }
+      },
+      "name": "Cron",
+      "type": "n8n-nodes-base.cron",
+      "typeVersion": 1,
+      "position": [
+        -400,
+        280
+      ]
+    },
+    {
+      "parameters": {},
+      "name": "NoOp",
+      "type": "n8n-nodes-base.noOp",
+      "typeVersion": 1,
+      "position": [
+        640,
+        360
+      ]
+    }
+  ],
+  "connections": {
+    "Run Scrapy Spider": {
+      "main": [
+        [
+          {
+            "node": "Convert to XLSX",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Convert to XLSX": {
+      "main": [
+        [
+          {
+            "node": "Read Binary File",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "SendGrid": {
+      "main": [
+        [
+          {
+            "node": "NoOp",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Read Binary File": {
+      "main": [
+        [
+          {
+            "node": "SendGrid",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "S3",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Cron": {
+      "main": [
+        [
+          {
+            "node": "Run Scrapy Spider",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "S3": {
+      "main": [
+        [
+          {
+            "node": "NoOp",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {},
+  "id": 1,
+  "tags": []
+}
