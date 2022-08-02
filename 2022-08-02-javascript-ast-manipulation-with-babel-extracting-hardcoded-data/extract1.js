@@ -1,5 +1,4 @@
 const fs = require("fs");
-const consoler = require("console");
 
 const parser = require("@babel/parser");
 const traverse = require("@babel/traverse").default;
