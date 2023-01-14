@@ -5,15 +5,8 @@ import sys
 
 import requests
 
-FIELDNAMES = [
-    "symbol",
-    "timestamp",
-    "open",
-    "close",
-    "high",
-    "low",
-    "url"
-]
+FIELDNAMES = ["symbol", "timestamp", "open", "close", "high", "low", "url"]
+
 
 def main():
     if len(sys.argv) != 4:
@@ -25,7 +18,19 @@ def main():
     interval = sys.argv[2]
     range_ = sys.argv[3]
 
-    if not range_ in ["1d", "5d", "1mo", "3mo", "6mo", "1y", "2y", "5y", "10y", "ytd", "max"]:
+    if not range_ in [
+        "1d",
+        "5d",
+        "1mo",
+        "3mo",
+        "6mo",
+        "1y",
+        "2y",
+        "5y",
+        "10y",
+        "ytd",
+        "max",
+    ]:
         print("Error: Invalid range")
         return -1
 
@@ -37,12 +42,18 @@ def main():
         "useYfid": True,
         "range": range_,
         "corsDomain": "finance.yahoo.com",
-        ".tsrc": "finance"
+        ".tsrc": "finance",
     }
 
     url = "https://query1.finance.yahoo.com/v8/finance/chart/" + symbol
 
-    resp = requests.get(url, params=params, headers={'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/109.0.0.0 Safari/537.36'})
+    resp = requests.get(
+        url,
+        params=params,
+        headers={
+            "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/109.0.0.0 Safari/537.36"
+        },
+    )
     print(resp.url)
 
     result_dict = resp.json().get("chart", dict()).get("result")[0]
@@ -53,9 +64,9 @@ def main():
     high_prices = quote_dict.get("high")
     low_prices = quote_dict.get("low")
 
-    out_f = open(symbol+ ".csv", "w", encoding="utf-8")
-    
-    csv_writer = csv.DictWriter(out_f, fieldnames=FIELDNAMES, lineterminator='\n')
+    out_f = open(symbol + ".csv", "w", encoding="utf-8")
+
+    csv_writer = csv.DictWriter(out_f, fieldnames=FIELDNAMES, lineterminator="\n")
     csv_writer.writeheader()
 
     for i in range(len(timestamps)):
@@ -66,7 +77,7 @@ def main():
             "close": close_prices[i],
             "high": high_prices[i],
             "low": low_prices[i],
-            "url": resp.url
+            "url": resp.url,
         }
 
         csv_writer.writerow(row)
@@ -76,4 +87,3 @@ def main():
 
 if __name__ == "__main__":
     main()
-
