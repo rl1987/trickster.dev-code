@@ -37,4 +37,3 @@ const result = babel.transformFileSync(path.join(__dirname, 'input.js') , {
 console.log(result.code);
 
 fs.writeFileSync(path.join(__dirname, 'output.js'), result.code, 'utf-8');
-
