@@ -2,7 +2,7 @@ const parser = require("@babel/parser");
 const generate = require("@babel/generator").default;
 const t = require("@babel/types");
 
-const debugStmt1 =  t.debuggerStatement();
+const debugStmt1 = t.debuggerStatement();
 
 const consoleId = t.identifier("console");
 const logId = t.identifier("log");
@@ -11,7 +11,7 @@ const callee = t.memberExpression(consoleId, logId);
 const callExpr = t.callExpression(callee, [ stringLiteral ]);
 const exprStmt = t.expressionStatement(callExpr);
 
-const debugStmt2 =  t.debuggerStatement();
+const debugStmt2 = { type: 'DebuggerStatement' };
 
 const body = [ debugStmt1, exprStmt, debugStmt2 ];
 
