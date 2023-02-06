@@ -7,6 +7,7 @@ export default function (babel) {
       BinaryExpression(path) {
         let evaluated = path.evaluate();
         if (!evaluated) return;
+        if (!evaluated.confident) return;
         
         let value = evaluated.value;
         let valueNode = t.valueToNode(value);
@@ -17,4 +18,3 @@ export default function (babel) {
     }
   };
 }
-
