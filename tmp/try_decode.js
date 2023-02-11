@@ -57,6 +57,8 @@ function _0x4ad0(_0x5d79db, _0x4ad0a1) {
 }
 
 
+console.log(_0x4ad0(2));
 console.log(_0x4ad0(1));
 console.log(_0x4ad0(2));
+console.log(_0x4ad0(1));
 
