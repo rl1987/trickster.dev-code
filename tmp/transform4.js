@@ -13,7 +13,7 @@ export default function (babel) {
           
           for (let refPath of binding.referencePaths) {
             if (refPath.parentPath.node.type === "CallExpression") {
-              refPath.replaceWith(encodedStringArrayExpr);
+              refPath.parentPath.replaceWith(encodedStringArrayExpr);
             }
           }
           
