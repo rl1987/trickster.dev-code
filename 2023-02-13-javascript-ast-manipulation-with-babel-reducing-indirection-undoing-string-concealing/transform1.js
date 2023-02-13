@@ -10,7 +10,6 @@ export default function (babel) {
         if (node.init.type != "ObjectExpression") return;
         let binding = path.scope.getBinding(node.id.name);
         if (!binding.constant) return;
-        console.log(binding);
         let properties = node.init.properties;
         if (!properties) return;
         
