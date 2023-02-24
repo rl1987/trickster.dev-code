@@ -6,13 +6,6 @@ export default function (babel) {
     visitor: {
       "UnaryExpression|BinaryExpression"(path) {
         let node = path.node;
-
-        if (t.isArrayExpression(node.left) &&
-            node.left.elements.length == 1 &&
-            t.isBooleanLiteral(node.left.elements[0])
-           ) {
-          node.left = t.valueToNode(String(node.left.elements[0].value));
-        }
         
         if (t.isNumericLiteral(node.left) && t.isNumericLiteral(node.right)) {
           if (node.right.value === 0) {
@@ -29,10 +22,7 @@ export default function (babel) {
         let result = path.evaluate();
         if (result.confident) {
           let valueNode = t.valueToNode(result.value);
-          if (t.isLiteral(valueNode)) {
-            path.replaceWith(valueNode);
-          } else {
-            path.replaceWith(valueNode);
+          if (!t.isLiteral(valueNode)) {
             path.skip();
           }
         }
