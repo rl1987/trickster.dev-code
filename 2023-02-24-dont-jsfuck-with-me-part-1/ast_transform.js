@@ -19,13 +19,13 @@ export default function (babel) {
            	if (node.left.value === 1) {
               path.replaceWith(t.identifier('Infinity'));
               return;
-            } else {
+            } else if (node.left.value === 0) {
               path.replaceWith(t.identifier('NaN'));
               return;
             }
           }
         }
-        
+
         let result = path.evaluate();
         if (result.confident) {
           let valueNode = t.valueToNode(result.value);
