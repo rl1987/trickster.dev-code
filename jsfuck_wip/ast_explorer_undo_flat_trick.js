@@ -2,7 +2,7 @@ export default function (babel) {
   const { types: t } = babel;
 
   return {
-    name: "undo-flat-trick" // not required
+    name: "undo-flat-trick", // not required
     visitor: {
       MemberExpression(path) {
         let node = path.node;
