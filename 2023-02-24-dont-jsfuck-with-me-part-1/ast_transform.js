@@ -22,7 +22,10 @@ export default function (babel) {
         let result = path.evaluate();
         if (result.confident) {
           let valueNode = t.valueToNode(result.value);
-          if (!t.isLiteral(valueNode)) {
+          if (t.isLiteral(valueNode)) {
+            path.replaceWith(valueNode);
+          } else {
+            path.replaceWith(valueNode);
             path.skip();
           }
         }
