@@ -2,7 +2,7 @@ export default function (babel) {
   const { types: t } = babel;
 
   return {
-    name: "undo-italics-trick" // not required
+    name: "undo-italics-trick", // not required
     visitor: {
       CallExpression(path) {
         let node = path.node;
