@@ -6,7 +6,7 @@ export default function (babel) {
     visitor: {
       CallExpression(path) {
         let node = path.node;
-	     	let callee = node.callee;
+        let callee = node.callee;
         if (!t.isMemberExpression(callee)) return;
         let calleeObj = callee.object;
         if (!t.isMemberExpression(calleeObj)) return;
