@@ -8,11 +8,22 @@ class BooksSpider(CrawlSpider):
     allowed_domains = ["books.toscrape.com"]
     start_urls = ["http://books.toscrape.com/"]
 
-    rules = (Rule(LinkExtractor(allow=r"Items/"), callback="parse_item", follow=True),)
+    rules = (
+        Rule(LinkExtractor(allow='index.html', 
+                           deny=[
+                               'catalogue/page', 
+                               'catalogue/category/books', 
+                               'https://books.toscrape.com/index.html']
+                           ), callback='parse_item', follow=True),
+        Rule(LinkExtractor(allow='catalogue/page'), follow=True)
+    )
+
 
     def parse_item(self, response):
         item = {}
-        #item["domain_id"] = response.xpath('//input[@id="sid"]/@value').get()
-        #item["name"] = response.xpath('//div[@id="name"]').get()
-        #item["description"] = response.xpath('//div[@id="description"]').get()
+
+        item['title'] = response.xpath('//h1/text()').get()
+        item['price'] = response.xpath('//div[contains(@class, "product_main")]/p[@class="price_color"]/text()').get()
+        item['url'] = response.url
+        
         return item
