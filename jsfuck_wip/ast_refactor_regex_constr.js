@@ -16,7 +16,10 @@ export default function (babel) {
         if (!t.isStringLiteral(property)) return;
         if (property.value != "constructor") return;
         
-        path.replaceWith(t.regExpLiteral(argument.value.replace('/', '\\/'), ''));
+        path.replaceWith(
+          t.regExpLiteral(argument.value.replace('/', '\\/'), '')
+        );
+      }
     }
   };
 }
