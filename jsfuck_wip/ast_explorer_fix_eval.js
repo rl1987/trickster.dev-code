@@ -6,6 +6,8 @@ export default function (babel) {
     visitor: {
       CallExpression(path) {
         let node = path.node;
+        if (node.arguments.length != 1) return;
+        if (!t.isStringLiteral(node.arguments[0])) return;
         let parent = path.parent;
         if (!t.isCallExpression(parent)) return;
         let callee = node.callee;
@@ -16,8 +18,7 @@ export default function (babel) {
         if (!t.isStringLiteral(callee.object.property)) return;
         let key2 = callee.object.property.value;
         if (key1 === "constructor" && (key2 === "filter" || key2 === "flat")) {
-          let evalCallExpr = t.callExpression(t.identifier('eval'), 
-                                                           node.arguments);
+          let evalCallExpr = t.callExpression(t.identifier('eval'), node.arguments);
           path.parentPath.replaceWith(evalCallExpr);
         }
       }
