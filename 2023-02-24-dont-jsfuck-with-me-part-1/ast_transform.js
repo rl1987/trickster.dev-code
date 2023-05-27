@@ -36,7 +36,7 @@ export default function (babel) {
         // https://stackoverflow.com/a/52986361/1044147
         function isNumeric(n) {
   	      return !isNaN(parseFloat(n)) && isFinite(n);
-		}
+        }
           
         if (isNumeric(node.property.value)) {
           node.property = t.valueToNode(Number(node.property.value));
