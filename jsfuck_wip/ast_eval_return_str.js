@@ -16,6 +16,9 @@ export default function (babel) {
         if (argStr.startsWith("return\"") && argStr.endsWith("\"")) {
           argStr = argStr.substr("return\"".length);
           argStr = argStr.substr(0, argStr.length-1);
+          // HACK to deal with escaped characters.
+          // https://stackoverflow.com/questions/48030856/evaluating-escaped-string-literals-in-javascript
+          argStr = eval('"' + argStr + '"')
           path.replaceWith(t.stringLiteral(argStr));
         }
       }
