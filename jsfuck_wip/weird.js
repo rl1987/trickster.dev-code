@@ -1,3 +1,5 @@
+ console.log("@HJKA")
+
 eval(
 []["flat"]["constructor"]("return" +
     "<font color=\"undefined\"></font>" [
