@@ -7,17 +7,6 @@ module.exports = function (babel) {
   return {
     name: "undo-function-escape-trick", // not required
     visitor: {
-      MemberExpression(path) {
-        let node = path.node;
-        if (!t.isArrayExpression(node.object)) return;
-        if (node.object.elements.length != 0) return;
-        if (!t.isStringLiteral(node.property)) return;
-        if (node.property.value === "flat") {
-          let newNode = t.valueToNode(String(Array.prototype.flat));
-          logASTChange("undo-function-escape-trick", node, newNode);
-          path.replaceWith(newNode);
-        }
-      },
       CallExpression(path) {
         let node = path.node;
         if (t.isCallExpression(node.callee) &&
