@@ -26,7 +26,16 @@ while (true) {
         path.join(__dirname, 'plugin_undo_regexp_trick.js'),
         path.join(__dirname, 'plugin_undo_string_trick.js'),
         path.join(__dirname, 'plugin_undo_number_tostring_trick.js'),
-        path.join(__dirname, 'plugin_undo_object_tostring_trick.js')
+        path.join(__dirname, 'plugin_undo_object_tostring_trick.js'),
+        path.join(__dirname, 'plugin_eval_return_str.js'),
+        path.join(__dirname, 'plugin_fix_eval.js'),
+        path.join(__dirname, 'plugin_number_constructor_str.js'),
+        path.join(__dirname, 'plugin_refactor_regex_constr.js'),
+        path.join(__dirname, 'plugin_regex_str.js'),
+        path.join(__dirname, 'plugin_simplify_false_regex.js'),
+        path.join(__dirname, 'plugin_string_array_join.js'),
+        path.join(__dirname, 'plugin_string_constructor_name.js'),
+        path.join(__dirname, 'plugin_string_split.js')
       ]
   });
 
