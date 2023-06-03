@@ -7,8 +7,8 @@ function decodeUnicodeChar(str) {
 
   str = str.replace(r, (match, grp) => String.fromCharCode(parseInt(grp, 16)))
            .replace(r3, (match, grp) => String.fromCharCode(parseInt(grp, 8)))
-           .replace(r2, (match, grp) => String.fromCharCode(parseInt(grp, 8)))
-           .replace(/\n/g, "<br>");
+           .replace(r2, (match, grp) => String.fromCharCode(parseInt(grp, 8)));
+
   return str; // return it
 }
 
