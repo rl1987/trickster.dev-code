@@ -1,6 +1,8 @@
 const babel = require("@babel/core");
 const t = require("@babel/types");
 
+const logASTChange = require("./debug.js").logASTChange;
+
 module.exports = function (babel) {
   return {
     name: "eval-expr", // not required
@@ -11,10 +13,14 @@ module.exports = function (babel) {
         if (t.isNumericLiteral(node.left) && t.isNumericLiteral(node.right)) {
           if (node.right.value === 0) {
            	if (node.left.value === 1) {
-              path.replaceWith(t.identifier('Infinity'));
+              let newNode = t.identifier('Infinity');
+              logASTChange("eval-expr", node, newNode);
+              path.replaceWith(newNode);
               return;
             } else if (node.left.value === 0) {
-              path.replaceWith(t.identifier('NaN'));
+              let newNode = t.identifier('NaN');
+              logASTChange("eval-expr", node, newNode);
+              path.replaceWith(newNode);
               return;
             }
           }
@@ -24,8 +30,10 @@ module.exports = function (babel) {
         if (result.confident) {
           let valueNode = t.valueToNode(result.value);
           if (t.isLiteral(valueNode)) {
+            logASTChange("eval-expr", node, valueNode);
             path.replaceWith(valueNode);
           } else {
+            logASTChange("eval-expr", node, valueNode);
             path.replaceWith(valueNode);
             path.skip();
           }
@@ -46,14 +54,18 @@ module.exports = function (babel) {
       	if (t.isStringLiteral(node.object) && 
             t.isNumericLiteral(node.property)) {
       	  let character = node.object.value[node.property.value];
-      	  path.replaceWith(t.valueToNode(character));
+          let valueNode = t.valueToNode(character);
+          logASTChange("eval-expr", node, valueNode);
+      	  path.replaceWith(valueNode);
         }
         
         if (t.isArrayExpression(node.object) &&
             node.object.elements.length == 0 &&
             t.isArrayExpression(node.property) &&
             node.property.elements.length == 0) {
-          path.replaceWith(t.valueToNode(undefined));
+          let valueNode = t.valueToNode(undefined);
+          logASTChange("eval-expr", node, valueNode);
+          path.replaceWith(valueNode);
         }
       }
     }
