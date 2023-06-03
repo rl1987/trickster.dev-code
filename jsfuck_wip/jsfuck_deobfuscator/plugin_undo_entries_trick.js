@@ -1,6 +1,8 @@
 const babel = require("@babel/core");
 const t = require("@babel/types");
 
+const logASTChange = require("./debug.js").logASTChange;
+
 module.exports = function (babel) {
   return {
     name: "undo-entries-trick", // not required
@@ -12,7 +14,9 @@ module.exports = function (babel) {
         if (node.callee.object.elements.length != 0) return;
         if (!t.isStringLiteral(node.callee.property)) return;
         if (node.callee.property.value === "entries" && t.isBinaryExpression(path.parent)) {
-          path.replaceWith(t.stringLiteral(String(String([]["entries"]()))));
+          let newNode = t.stringLiteral(String(String([]["entries"]())));
+          logASTChange("undo-entries-trick", node, newNode);
+          path.replaceWith(newNode);
         }
       }
     }

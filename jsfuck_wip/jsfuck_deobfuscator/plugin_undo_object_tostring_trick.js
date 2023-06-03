@@ -1,6 +1,8 @@
 const babel = require("@babel/core");
 const t = require("@babel/types");
 
+const logASTChange = require("./debug.js").logASTChange;
+
 module.exports = function (babel) {
   return {
     name: "undo-object-tostring-call", // not required
@@ -19,7 +21,9 @@ module.exports = function (babel) {
         if (callee.property.value != "call") return;
         if (!t.isStringLiteral(callee.object.property)) return;
         if (callee.object.property.value != "toString") return;
-        path.replaceWith(t.valueToNode(Object()["toString"]["call"]()));
+        let newNode = t.valueToNode(Object()["toString"]["call"]());
+        logASTChange("undo-object-tostring-call", node, newNode);
+        path.replaceWith(newNode);
       }
     }
   };

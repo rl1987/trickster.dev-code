@@ -1,6 +1,8 @@
 const babel = require("@babel/core");
 const t = require("@babel/types");
 
+const logASTChange = require("./debug.js").logASTChange;
+
 module.exports = function (babel) {
   return {
     name: "undo-number-tostring-trick", // not required
@@ -15,7 +17,9 @@ module.exports = function (babel) {
         if (!t.isLiteral(node.arguments[0])) return;
         
         let numericStr = node.callee.object.value["toString"](node.arguments[0].value);
-        path.replaceWith(t.valueToNode(numericStr));
+        let newNode = t.valueToNode(numericStr);
+        logASTChange("undo-number-tostring-trick", node, newNode);
+        path.replaceWith(newNode);
       }
     }
   };

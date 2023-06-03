@@ -1,6 +1,8 @@
 const babel = require("@babel/core");
 const t = require("@babel/types");
 
+const logASTChange = require("./debug.js").logASTChange;
+
 // Based on code from: https://stackoverflow.com/a/62633125
 function decodeUnicodeChar(str) {
   if (str == null) return ""; // no need extra test on undefined
@@ -32,7 +34,9 @@ module.exports = function (babel) {
           argStr = argStr.substr("return\"".length);
           argStr = argStr.substr(0, argStr.length-1);
           argStr = decodeUnicodeChar(argStr);
-          path.replaceWith(t.stringLiteral(argStr));
+          let newNode = t.stringLiteral(argStr);
+          logASTChange("eval-return-str", node, newNode);
+          path.replaceWith(newNode);
         }
       }
     }

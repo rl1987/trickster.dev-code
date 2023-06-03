@@ -1,6 +1,8 @@
 const babel = require("@babel/core");
 const t = require("@babel/types");
 
+const logASTChange = require("./debug.js").logASTChange;
+
 module.exports = function (babel) {
   return {
     name: "undo-italics-trick", // not required
@@ -13,7 +15,9 @@ module.exports = function (babel) {
         if (node.callee.property.value === "italics") {
            const fromStr = node.callee.object.value;
            if (node.arguments.length === 0) {
-             path.replaceWith(t.valueToNode(fromStr.italics()));
+             let newNode = t.valueToNode(fromStr.italics());
+             logASTChange("undo-italics-trick", node, newNode);
+             path.replaceWith(newNode);
            } 
         }
       }

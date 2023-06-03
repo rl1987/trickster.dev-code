@@ -1,6 +1,8 @@
 const babel = require("@babel/core");
 const t = require("@babel/types");
 
+const logASTChange = require("./debug.js").logASTChange;
+
 module.exports = function (babel) {
   return {
     name: "string-split", // not required
@@ -22,7 +24,9 @@ module.exports = function (babel) {
         let components = str.split(separator);
         components = components.map(c => t.valueToNode(c));
 
-        path.replaceWith(t.arrayExpression(components));
+        let newNode = t.arrayExpression(components);
+        logASTChange("string-split", callExpr, newNode);
+        path.replaceWith(newNode);
       }
     }
   };

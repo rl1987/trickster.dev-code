@@ -1,6 +1,8 @@
 const babel = require("@babel/core");
 const t = require("@babel/types");
 
+const logASTChange = require("./debug.js").logASTChange;
+
 module.exports = function (babel) {
   return {
     name: "fix-eval", // not required
@@ -20,6 +22,7 @@ module.exports = function (babel) {
         let key2 = callee.object.property.value;
         if (key1 === "constructor" && (key2 === "filter" || key2 === "flat")) {
           let evalCallExpr = t.callExpression(t.identifier('eval'), node.arguments);
+          logASTChange("fix-eval", node, evalCallExpr);
           path.parentPath.replaceWith(evalCallExpr);
         }
       }

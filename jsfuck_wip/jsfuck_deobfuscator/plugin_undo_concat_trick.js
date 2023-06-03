@@ -1,6 +1,8 @@
 const babel = require("@babel/core");
 const t = require("@babel/types");
 
+const logASTChange = require("./debug.js").logASTChange;
+
 module.exports = function (babel) {
   return {
     name: "undo-concat-trick", // not required
@@ -23,8 +25,10 @@ module.exports = function (babel) {
         if (node.arguments[0].elements[0].elements.length != 0) return;
         
         if (!t.isBinaryExpression(path.parent)) return;
-        
-        path.replaceWith(t.valueToNode(String([ [], [] ])));
+
+        let newNode = t.valueToNode(String([ [], [] ]));
+        logASTChange("undo-concat-trick", node, newNode);
+        path.replaceWith(newNode);
       }
     }
   };

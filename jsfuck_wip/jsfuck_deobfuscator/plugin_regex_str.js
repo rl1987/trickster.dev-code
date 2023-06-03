@@ -1,6 +1,8 @@
 const babel = require("@babel/core");
 const t = require("@babel/types");
 
+const logASTChange = require("./debug.js").logASTChange;
+
 module.exports = function (babel) {
   return {
     name: "regex-str", // not required
@@ -15,7 +17,9 @@ module.exports = function (babel) {
         
         const regexStr = String(RegExp(left.pattern));
         
-        path.replaceWith(t.stringLiteral(regexStr));
+        let newNode = t.stringLiteral(regexStr);
+        logASTChange("regex-str", node, newNode);
+        path.replaceWith(newNode);
       }
     }
   };

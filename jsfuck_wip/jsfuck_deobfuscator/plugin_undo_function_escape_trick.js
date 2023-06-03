@@ -1,6 +1,8 @@
 const babel = require("@babel/core");
 const t = require("@babel/types");
 
+const logASTChange = require("./debug.js").logASTChange;
+
 module.exports = function (babel) {
   return {
     name: "undo-function-escape-trick", // not required
@@ -10,7 +12,11 @@ module.exports = function (babel) {
         if (!t.isArrayExpression(node.object)) return;
         if (node.object.elements.length != 0) return;
         if (!t.isStringLiteral(node.property)) return;
-        if (node.property.value === "flat") path.replaceWith(t.valueToNode(String(Array.prototype.flat)));
+        if (node.property.value === "flat") {
+          let newNode = t.valueToNode(String(Array.prototype.flat));
+          logASTChange("undo-function-escape-trick", node, newNode);
+          path.replaceWith(newNode);
+        }
       },
       CallExpression(path) {
         let node = path.node;
@@ -23,7 +29,9 @@ module.exports = function (babel) {
             node.callee.callee.arguments[0].value === "return escape" &&
             t.isStringLiteral(node.arguments[0])
            ) {
-            path.replaceWith(t.valueToNode(escape(node.arguments[0].value)));
+          let newNode = t.valueToNode(escape(node.arguments[0].value));
+          logASTChange("undo-function-escape-trick", node, newNode);
+          path.replaceWith(newNode);
         }
       }
     }

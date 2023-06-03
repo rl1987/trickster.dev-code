@@ -1,6 +1,8 @@
 const babel = require("@babel/core");
 const t = require("@babel/types");
 
+const logASTChange = require("./debug.js").logASTChange;
+
 module.exports = function (babel) {
   return {
     name: "undo-function-date-trick", // not required
@@ -15,7 +17,9 @@ module.exports = function (babel) {
             t.isStringLiteral(node.callee.callee.arguments[0]) &&
             node.callee.callee.arguments[0].value === "return Date"
            ) {
-            path.replaceWith(t.valueToNode(Date()));
+          let newNode = t.valueToNode(Date());
+          logASTChange("undo-function-date-trick", node, newNode);
+          path.replaceWith(newNode);
         }
       }
     }

@@ -1,6 +1,8 @@
 const babel = require("@babel/core");
 const t = require("@babel/types");
 
+const logASTChange = require("./debug.js").logASTChange;
+
 module.exports = function (babel) {
   return {
     name: "undo-slice-trick", // not required
@@ -16,7 +18,9 @@ module.exports = function (babel) {
              t.isNumericLiteral(node.arguments[0])) &&
              Number(node.arguments[0].value) === -1) {
           let fromStr = node.callee.object.value;
-          path.replaceWith(t.valueToNode(fromStr.slice(-1)));
+          let newNode = t.valueToNode(fromStr.slice(-1));
+          logASTChange("undo-slice-trick", node, newNode);
+          path.replaceWith(newNode);
         }
       }
     }

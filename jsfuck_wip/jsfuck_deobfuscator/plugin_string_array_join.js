@@ -1,6 +1,8 @@
 const babel = require("@babel/core");
 const t = require("@babel/types");
 
+const logASTChange = require("./debug.js").logASTChange;
+
 module.exports = function (babel) {
   return {
     name: "string-array-join", // not required
@@ -33,6 +35,7 @@ module.exports = function (babel) {
         separator = separator.value;
         
         let newNode = t.valueToNode(array.join(separator));
+        logASTChange("string-array-join", callExpr, newNode);
         path.replaceWith(newNode);
       }
     }

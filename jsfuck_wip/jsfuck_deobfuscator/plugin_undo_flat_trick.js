@@ -1,6 +1,8 @@
 const babel = require("@babel/core");
 const t = require("@babel/types");
 
+const logASTChange = require("./debug.js").logASTChange;
+
 module.exports = function (babel) {
   return {
     name: "undo-flat-trick", // not required
@@ -11,7 +13,9 @@ module.exports = function (babel) {
         if (node.object.elements.length != 0) return;
         if (!t.isStringLiteral(node.property)) return;
         if (node.property.value === "flat" && t.isBinaryExpression(path.parent)) {
-          path.replaceWith(t.stringLiteral(String(Array.prototype.flat)));
+          let newNode = t.stringLiteral(String(Array.prototype.flat));
+          logASTChange("undo-flat-trick", node, newNode);
+          path.replaceWith(newNode);
         }
       }
     }

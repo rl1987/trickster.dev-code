@@ -1,6 +1,8 @@
 const babel = require("@babel/core");
 const t = require("@babel/types");
 
+const logASTChange = require("./debug.js").logASTChange;
+
 module.exports = function (babel) {
   return {
     name: "undo-fontcolor-trick", // not required
@@ -12,9 +14,13 @@ module.exports = function (babel) {
         if (!t.isStringLiteral(node.callee.property)) return;
         if (node.callee.property.value === "fontcolor") {
            if (node.arguments.length === 0) {
-             path.replaceWith(t.valueToNode(String.prototype.fontcolor()));
+             let newNode = t.valueToNode(String.prototype.fontcolor());
+             logASTChange("undo-fontcolor-trick", node, newNode);
+             path.replaceWith(newNode);
            } else if (t.isLiteral(node.arguments[0])) {
-             path.replaceWith(t.valueToNode(String.prototype.fontcolor(node.arguments[0].value)))
+             let newNode = t.valueToNode(String.prototype.fontcolor(node.arguments[0].value));
+             logASTChange("undo-fontcolor-trick", node, newNode);
+             path.replaceWith(newNode);
            }
         }
       }

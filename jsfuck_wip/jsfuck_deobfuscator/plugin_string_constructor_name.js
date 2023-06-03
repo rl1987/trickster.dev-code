@@ -1,6 +1,8 @@
 const babel = require("@babel/core");
 const t = require("@babel/types");
 
+const logASTChange = require("./debug.js").logASTChange;
+
 module.exports = function (babel) {
   return {
     name: "string-constructor-name", // not required
@@ -15,8 +17,10 @@ module.exports = function (babel) {
         const outerProp = outerMembExpr.property;
         if (!t.isStringLiteral(outerProp)) return;
         if (outerProp.value != "name") return;
-        
-        path.replaceWith(t.stringLiteral("String"));
+  
+        let newNode = t.stringLiteral("String");
+        logASTChange("string-constructor-name", outerMembExpr, newNode);
+        path.replaceWith(newNode);
       }
     }
   };

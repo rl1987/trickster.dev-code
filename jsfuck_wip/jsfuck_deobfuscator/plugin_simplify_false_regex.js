@@ -1,6 +1,8 @@
 const babel = require("@babel/core");
 const t = require("@babel/types");
 
+const logASTChange = require("./debug.js").logASTChange;
+
 module.exports = function (babel) {
   return {
     name: "simplify-false-regex", // not required
@@ -26,7 +28,9 @@ module.exports = function (babel) {
         const argStrLiteral = callExpr.callee.arguments[0];
         if (!t.isStringLiteral(argStrLiteral)) return;
         if (argStrLiteral.value != "return/false/") return;      
-        path.replaceWith(t.regExpLiteral('false', ''));
+        let newNode = t.regExpLiteral('false', '');
+        logASTChange("simplify-false-regex", callExpr, newNode);
+        path.replaceWith(newNode);
       }
     }
   };

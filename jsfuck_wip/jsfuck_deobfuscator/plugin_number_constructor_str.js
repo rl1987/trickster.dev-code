@@ -1,6 +1,8 @@
 const babel = require("@babel/core");
 const t = require("@babel/types");
 
+const logASTChange = require("./debug.js").logASTChange;
+
 module.exports = function (babel) {
  return {
     name: "number-constructor-str", // not required
@@ -14,7 +16,9 @@ module.exports = function (babel) {
         if (property.value != "constructor") return;
         if (!t.isBinaryExpression(path.parent)) return;
         
-        path.replaceWith(t.stringLiteral(String(Number.prototype.constructor)));
+        let newNode = t.stringLiteral(String(Number.prototype.constructor));
+        logASTChange("number-constructor-str", node, newNode);
+        path.replaceWith(newNode);
       }
     }
   };

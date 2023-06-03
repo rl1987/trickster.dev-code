@@ -1,6 +1,8 @@
 const babel = require("@babel/core");
 const t = require("@babel/types");
 
+const logASTChange = require("./debug.js").logASTChange;
+
 module.exports = function (babel) {
   return {
     name: "refactor-regex-constr", // not required
@@ -16,10 +18,10 @@ module.exports = function (babel) {
         let property = calleeMemberExpr.property;
         if (!t.isStringLiteral(property)) return;
         if (property.value != "constructor") return;
-        
-        path.replaceWith(
-          t.regExpLiteral(argument.value.replace('/', '\\/'), '')
-        );
+      
+        let newNode = t.regExpLiteral(argument.value.replace('/', '\\/'), '');
+        logASTChange("refactor-regex-constr", node, newNode);
+        path.replaceWith(newNode);
       }
     }
   };
