@@ -20,7 +20,7 @@ module.exports = function (babel) {
         if (property.value != "constructor") return;
       
         let newNode = t.regExpLiteral(argument.value.replace('/', '\\/'), '');
-        logASTChange("refactor-regex-constr", node, newNode);
+        logASTChange("refactor-regex-constr", callExpr, newNode);
         path.replaceWith(newNode);
       }
     }

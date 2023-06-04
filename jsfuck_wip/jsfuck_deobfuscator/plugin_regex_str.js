@@ -18,7 +18,7 @@ module.exports = function (babel) {
         const regexStr = String(RegExp(left.pattern));
         
         let newNode = t.stringLiteral(regexStr);
-        logASTChange("regex-str", node, newNode);
+        logASTChange("regex-str", binExpr, newNode);
         path.replaceWith(newNode);
       }
     }

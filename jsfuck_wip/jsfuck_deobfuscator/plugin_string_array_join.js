@@ -34,7 +34,8 @@ module.exports = function (babel) {
         if (!t.isStringLiteral(separator)) return;
         separator = separator.value;
         
-        let newNode = t.valueToNode(array.join(separator));
+        let joinedStr = array.join(separator);
+        let newNode = t.valueToNode(joinedStr);
         logASTChange("string-array-join", callExpr, newNode);
         path.replaceWith(newNode);
       }
