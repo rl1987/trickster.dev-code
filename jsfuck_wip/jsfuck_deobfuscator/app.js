@@ -12,7 +12,6 @@ console.log("-----------------------------------------------------------------")
 while (true) {
   const result = babel.transformSync(js, {
       plugins: [
-        // TODO: turn each AST transform into proper Babel plugin
         path.join(__dirname, 'plugin_eval_expr.js'),
         path.join(__dirname, 'plugin_undo_flat_trick.js'),
         path.join(__dirname, 'plugin_undo_entries_trick.js'),

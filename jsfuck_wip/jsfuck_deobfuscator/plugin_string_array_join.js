@@ -8,7 +8,9 @@ module.exports = function (babel) {
     name: "string-array-join", // not required
     visitor: {
       CallExpression(path) {
-        const callExpr = path.node;
+        // We call cloneNode() to make a copy we could edit without messing up
+        // the original subtree that we may want to inspect for debugging.
+        const callExpr = t.cloneNode(path.node);
         const memberExpr = callExpr.callee;
         if (!t.isMemberExpression(memberExpr)) return;
         let array = memberExpr.object;
@@ -35,8 +37,8 @@ module.exports = function (babel) {
         separator = separator.value;
         
         let joinedStr = array.join(separator);
-        let newNode = t.valueToNode(joinedStr);
-        logASTChange("string-array-join", callExpr, newNode);
+        let newNode = t.stringLiteral(joinedStr);
+        logASTChange("string-array-join", path.node, newNode);
         path.replaceWith(newNode);
       }
     }
