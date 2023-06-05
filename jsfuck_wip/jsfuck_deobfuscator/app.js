@@ -45,7 +45,8 @@ while (true) {
         path.join(__dirname, 'plugin_simplify_false_regex.js'),
         path.join(__dirname, 'plugin_string_array_join.js'),
         path.join(__dirname, 'plugin_string_constructor_name.js'),
-        path.join(__dirname, 'plugin_string_split.js')
+        path.join(__dirname, 'plugin_string_split.js'),
+        path.join(__dirname, 'plugin_eval_program.js')
       ]
   });
 
