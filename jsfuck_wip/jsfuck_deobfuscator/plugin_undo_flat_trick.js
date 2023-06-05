@@ -12,7 +12,8 @@ module.exports = function (babel) {
         if (!t.isArrayExpression(node.object)) return;
         if (node.object.elements.length != 0) return;
         if (!t.isStringLiteral(node.property)) return;
-        if (node.property.value === "flat" && t.isBinaryExpression(path.parent)) {
+        if (node.property.value === "flat" && 
+          (t.isBinaryExpression(path.parent) || t.isCallExpression(path.parent))) { // XXX
           let newNode = t.stringLiteral(String(Array.prototype.flat));
           logASTChange("undo-flat-trick", node, newNode);
           path.replaceWith(newNode);
