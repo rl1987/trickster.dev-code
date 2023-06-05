@@ -5,19 +5,26 @@ const logASTChange = require("./debug.js").logASTChange;
 
 module.exports = function (babel) {
  return {
-    name: "number-constructor-str", // not required
+    name: "constructor-str", // not required
     visitor: {
       MemberExpression(path) {
         const node = path.node;
         let obj = node.object;
-        if (!t.isNumericLiteral(obj)) return;
         let property = node.property;
         if (!t.isStringLiteral(property)) return;
         if (property.value != "constructor") return;
         if (!t.isBinaryExpression(path.parent)) return;
         
-        let newNode = t.stringLiteral(String(Number.prototype.constructor));
-        logASTChange("number-constructor-str", node, newNode);
+        let newNode;
+        
+        if (t.isNumericLiteral(obj)) {
+          newNode = t.stringLiteral(String(Number.prototype.constructor));
+        } else if (t.isStringLiteral(obj)) {
+          newNode = t.stringLiteral(String(String.prototype.constructor));
+        } else if (t.isBooleanLiteral(obj)) {
+          newNode = t.stringLiteral(String(Boolean.prototype.constructor));
+        }
+        
         path.replaceWith(newNode);
       }
     }
