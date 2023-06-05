@@ -14,6 +14,7 @@ module.exports = function (babel) {
         if (!t.isStringLiteral(property)) return;
         if (property.value != "constructor") return;
         if (!t.isBinaryExpression(path.parent)) return;
+        if (path.parent.operator != "+") return;
         
         let newNode;
         
@@ -23,9 +24,16 @@ module.exports = function (babel) {
           newNode = t.stringLiteral(String(String.prototype.constructor));
         } else if (t.isBooleanLiteral(obj)) {
           newNode = t.stringLiteral(String(Boolean.prototype.constructor));
+        } else if (t.isMemberExpression(obj) && t.isArrayExpression(obj.object) && t.isStringLiteral(obj.property)) {
+          if (obj.property.value == "flat") {
+            newNode = t.stringLiteral(String(Function.prototype.constructor));
+          }
         }
         
-        path.replaceWith(newNode);
+        if (newNode) {
+          logASTChange("constructor-str", node, newNode);
+          path.replaceWith(newNode);
+        }
       }
     }
   };

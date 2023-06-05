@@ -22,7 +22,7 @@ const { types: t } = babel;
           newNode = t.stringLiteral(String(Boolean.prototype.constructor));
         }
         
-        path.replaceWith(newNode);
+        if (newNode) path.replaceWith(newNode);
       }
     }
   };
