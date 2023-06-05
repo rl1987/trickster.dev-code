@@ -19,11 +19,9 @@ module.exports = function (babel) {
         if (!t.isStringLiteral(callExpr2.arguments[0])) return;
 
         let argStr = callExpr2.arguments[0].value;
-        console.log(argStr);
         
         if (argStr.startsWith("return ") && !argStr.includes('"')) {
           let fnName = argStr.substr("return ".length)
-          console.log(fnName);
           let newNode = t.callExpression(t.identifier(fnName), 
                                          [t.cloneNode(callExpr.arguments[0])]);
           
