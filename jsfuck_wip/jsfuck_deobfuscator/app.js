@@ -1,11 +1,20 @@
 const fs = require("fs");
 const path = require("path");
+const process = require("process");
 
 const babel = require("@babel/core");
 const t = require("@babel/types");
 
-// TODO: take file paths via CLI
-let js = fs.readFileSync("./input.js", "utf-8");
+if (process.argv.length != 4) {
+  console.log("Usage:");
+  console.log("node app.js <input_js> <output_js>");
+  process.exit(0);
+}
+
+const input_js = process.argv[2];
+const output_js = process.argv[3];
+
+let js = fs.readFileSync(input_js, "utf-8");
 console.log(js);
 console.log("-----------------------------------------------------------------");
 
@@ -46,4 +55,4 @@ while (true) {
   js = result.code;
 }
 
-fs.writeFileSync(path.join(__dirname, 'output.js'), js, 'utf-8');
+fs.writeFileSync(path.join(__dirname, output_js), js, 'utf-8');
