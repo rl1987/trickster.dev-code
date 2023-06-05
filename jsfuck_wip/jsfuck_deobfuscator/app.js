@@ -30,6 +30,7 @@ while (true) {
         path.join(__dirname, 'plugin_undo_fontcolor_trick.js'),
         path.join(__dirname, 'plugin_undo_italics_trick.js'),
         path.join(__dirname, 'plugin_undo_function_escape_trick.js'),
+        path.join(__dirname, 'plugin_undo_escape_call.js'),
         path.join(__dirname, 'plugin_undo_function_date_trick.js'),
         path.join(__dirname, 'plugin_undo_regexp_trick.js'),
         path.join(__dirname, 'plugin_undo_string_trick.js'),
