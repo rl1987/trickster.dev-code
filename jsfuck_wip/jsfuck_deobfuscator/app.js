@@ -36,6 +36,7 @@ while (true) {
         path.join(__dirname, 'plugin_undo_number_tostring_trick.js'),
         path.join(__dirname, 'plugin_undo_object_tostring_trick.js'),
         path.join(__dirname, 'plugin_eval_return_str.js'),
+        path.join(__dirname, 'plugin_eval_return_fncall.js'),
         path.join(__dirname, 'plugin_fix_eval.js'),
         path.join(__dirname, 'plugin_constructor_str.js'),
         path.join(__dirname, 'plugin_refactor_regex_constr.js'),
