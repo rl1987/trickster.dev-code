@@ -132,4 +132,4 @@ dmypy.json
 *.swp
 *.csv
 *.csv#
-jsfuck_wip/jsfuck_deobfuscator/node_modules
+2023-06-25-dont-jsfuck-with-me-part-3/jsfuck_deobfuscator/node_modules/
