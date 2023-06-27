@@ -16,14 +16,9 @@ def create_solver():
     solver = turnstileProxyless()
 
     solver.set_verbose(1)
-    # solver.set_key("c049b6d16f574f35c49ce3d9d4ca7fa9")
     solver.set_key(os.getenv("ANTICAPTCHA_KEY"))
     solver.set_website_url("https://ahrefs.com/backlink-checker")
     solver.set_website_key("0x4AAAAAAAAzi9ITzSN9xKMi")
-    solver.set_proxy_address("46.101.165.109")
-    solver.set_proxy_port(3128)
-    solver.set_proxy_login("user")
-    solver.set_proxy_password("trust_no_1")
 
     return solver
 
