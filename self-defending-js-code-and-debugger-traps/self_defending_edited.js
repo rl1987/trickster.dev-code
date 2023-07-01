@@ -17,7 +17,7 @@ function hi() {
     return _0x23cc70['toString']()['search']('(((.+)+)+)+$')['toString']()['constructor'](_0x23cc70)['search']('(((.+)+)+)+$');
   });
   _0x23cc70();
-  console['log']('Hello\x20World'); // Exclamation mark removed!
+  console['log']('Hello\x20World!');
   console['log']('Hello\x20World!');
   console['log']('Hello\x20World!');
   console['log']('Hello\x20World!');
