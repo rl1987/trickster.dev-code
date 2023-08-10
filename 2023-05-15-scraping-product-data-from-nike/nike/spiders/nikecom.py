@@ -8,7 +8,7 @@ from nike.items import NikeProductItem
 class NikecomSpider(scrapy.Spider):
     name = 'nikecom'
     allowed_domains = ['nike.com', 'www.nike.com', 'api.nike.com']
-    start_urls = ['https://www.nike.com/w/mens-shoes-nik1zy7ok']
+    start_urls = ['https://www.nike.com/w/?vst=']
 
     def start_requests(self):
         for url in self.start_urls:
