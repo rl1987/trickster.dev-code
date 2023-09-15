@@ -49,6 +49,8 @@ else p-=
 *13;
 */233901153* 9;  p-=543022206;
  n=leastFactor(p);
-{ document.cookie="KEY="+n+"*"+p/n+":"+s+":3373455379:1;path=/;";
-  document.location.reload(true); }
+{ 
+  document.cookie = "KEY="+n+"*"+p/n+":"+s+":3373455379:1;path=/;";
+  document.location.reload(true); 
+  }
 }

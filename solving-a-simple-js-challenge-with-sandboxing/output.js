@@ -1,7 +1,7 @@
 function leastFactor(n) {
   if (isNaN(n) || !isFinite(n)) return NaN;
   if (typeof phantom !== 'undefined') return 'phantom';
-  if (typeof module !== 'undefined' && module.exports) return 'node';
+  //if (typeof module !== 'undefined' && module.exports) return 'node';
   if (n == 0) return 0;
   if (n % 1 || n * n < 2) return 1;
   if (n % 2 == 0) return 2;
@@ -35,7 +35,7 @@ function go() {
   p -= 543022206;
   n = leastFactor(p);
   {
-    document.cookie = "KEY=" + n + "*" + p / n + ":" + s + ":3373455379:1;path=/;";
-    document.location.reload(true);
+    console.log("KEY=" + n + "*" + p / n + ":" + s + ":3373455379:1;path=/;");
   }
 }
+
