@@ -117,6 +117,9 @@ def scrape(session):
         print(resp.url)
 
         yield from gen_rows_from_response_payload(resp.json())
+        hits = resp.json().get('hits', dict()).get('hits', [])
+        if len(hits) == 0:
+            break
 
         scroll_id = resp.json().get('_scroll_id')
 
@@ -131,6 +134,7 @@ def main():
         if csv_writer is None:
             csv_writer = csv.DictWriter(out_f, fieldnames=list(row.keys()),
                                         lineterminator="\n")
+            csv_writer.writeheader()
 
         csv_writer.writerow(row)
 
