@@ -43,20 +43,20 @@ def gen_rows_from_response_payload(resp_json):
     for hit_dict in hits:
         source_dict = hit_dict.get("_source", dict())
 
-        item = dict()
+        row = dict()
 
-        item["title"] = source_dict.get("title")
-        item["department"] = source_dict.get("department")
-        item["category"] = source_dict.get("type")
-        item["current_location"] = source_dict.get("current_location")
-        item["materials"] = source_dict.get("medium")
-        item["technique"] = source_dict.get("medium_description")
-        item["from_location"] = source_dict.get("creation_address")
-        item["date_description"] = source_dict.get("creation_date")[0]
+        row["title"] = source_dict.get("title")
+        row["department"] = source_dict.get("department")
+        row["category"] = source_dict.get("type")
+        row["current_location"] = source_dict.get("current_location")
+        row["materials"] = source_dict.get("medium")
+        row["technique"] = source_dict.get("medium_description")
+        row["from_location"] = source_dict.get("creation_address")
+        row["date_description"] = source_dict.get("creation_date")[0]
 
         try:
-            item["year_start"] = int(source_dict.get("creation_date")[0])
-            item["year_end"] = int(source_dict.get("creation_date")[-1])
+            row["year_start"] = int(source_dict.get("creation_date")[0])
+            row["year_end"] = int(source_dict.get("creation_date")[-1])
         except:
             pass
 
@@ -67,27 +67,27 @@ def gen_rows_from_response_payload(resp_json):
             maker_death_years = list(map(lambda m: str(m.get("death", "")), makers))
             maker_genders = list(map(lambda m: str(m.get("gender")), makers))
 
-            item["maker_full_name"] = "|".join(maker_names)
-            item["maker_birth_year"] = "|".join(maker_birth_years).replace("None", "")
-            item["maker_death_year"] = "|".join(maker_death_years).replace("None", "")
-            item["maker_gender"] = "|".join(maker_genders).replace("None", "")
+            row["maker_full_name"] = "|".join(maker_names)
+            row["maker_birth_year"] = "|".join(maker_birth_years).replace("None", "")
+            row["maker_death_year"] = "|".join(maker_death_years).replace("None", "")
+            row["maker_gender"] = "|".join(maker_genders).replace("None", "")
 
         try:
-            item["acquired_year"] = source_dict.get("acquisition_date", "").split("-")[
+            row["acquired_year"] = source_dict.get("acquisition_date", "").split("-")[
                 0
             ]
         except:
             pass
 
-        item["acquired_from"] = source_dict.get("acquisition_method")
-        item["accession_number"] = source_dict.get("accession_number")
-        item["credit_line"] = source_dict.get("credit_line")
+        row["acquired_from"] = source_dict.get("acquisition_method")
+        row["accession_number"] = source_dict.get("accession_number")
+        row["credit_line"] = source_dict.get("credit_line")
 
-        item["url"] = "https://collection.carnegieart.org/objects/" + source_dict.get(
+        row["url"] = "https://collection.carnegieart.org/objects/" + source_dict.get(
             "id", ""
         ).replace("cmoa:objects/", "")
 
-        yield item
+        yield row
 
 
 def scrape(session):
