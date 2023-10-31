@@ -75,7 +75,7 @@ def get_backlinks(session, solver, url):
     json_data = {"captcha": token, "mode": "exact", "url": url}
 
     resp1 = session.post(
-        "https://ahrefs.com/v4/ftBacklinkCheckerPrimary", json=json_data
+        "https://ahrefs.com/v4/stGetFreeBacklinksOverview", json=json_data
     )
     print(resp1.url)
     print(resp1.text)
@@ -95,7 +95,7 @@ def get_backlinks(session, solver, url):
     json_data2 = {"reportType": "TopBacklinks", "signedInput": signed_input}
 
     resp2 = session.post(
-        "https://ahrefs.com/v4/ftBacklinkCheckerSecondary", json=json_data2
+        "https://ahrefs.com/v4/stGetFreeBacklinksList", json=json_data2
     )
     print(resp2.url)
     pprint(resp2.json())
