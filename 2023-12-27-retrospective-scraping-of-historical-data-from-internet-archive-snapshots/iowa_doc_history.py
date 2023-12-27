@@ -22,7 +22,7 @@ def get_snapshot_urls():
     df = pd.DataFrame(df.values[1:], columns=headers)
 
     df["snapshot_url"] = df["timestamp"].apply(
-        lambda ts: "https://web.archive.org/web/" + ts + "/https://doc.iowa.gov/"
+        lambda ts: "https://web.archive.org/web/" + ts + "/" + ORIG_URL
     )
 
     return df["snapshot_url"].to_list()
