@@ -29,9 +29,7 @@ def get_snapshot_urls():
 
 
 def scrape_stats_table(url):
-    dfs = pd.read_html(
-        "https://web.archive.org/web/20210303210751/https://doc.iowa.gov/daily-statistics"
-    )
+    dfs = pd.read_html(url)
 
     print(url)
 
