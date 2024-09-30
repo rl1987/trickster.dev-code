@@ -63,7 +63,7 @@ func main() {
 		gologger.Fatal().Msg(err.Error())
 	}
 	defer crawler.Close()
-	var input = "https://books.toscrape.com"
+	var input = "https://public-firing-range.appspot.com/"
 	err = crawler.Crawl(input)
 	if err != nil {
 		gologger.Warning().Msgf("Could not crawl %s: %s", input, err.Error())
