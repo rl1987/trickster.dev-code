@@ -1,10 +1,10 @@
 range(1; 101) |
   if . % 15 == 0 then
-    "\(.) FizzBuzz"
+    "FizzBuzz"
   elif . % 3 == 0 then
-    "\(.) Fizz"
+    "Fizz"
   elif . % 5 == 0 then
-    "\(.) Buzz"
+    "Buzz"
   else
     .
   end
