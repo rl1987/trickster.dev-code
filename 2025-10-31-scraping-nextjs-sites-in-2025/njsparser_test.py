@@ -4,7 +4,7 @@ from pprint import pprint
 
 proxy_url = input("Proxy URL: ")
 
-if proxy_url.strip == "":
+if proxy_url.strip() == "":
     proxy_url = None
 
 proxies = {
@@ -13,7 +13,7 @@ proxies = {
 
 url = input("Page URL: ")
 
-response = requests.get(url, proxies, verify=False)
+response = requests.get(url, proxies=proxies, verify=False)
 print(response.url, response.status_code)
 
 fd = njsparser.BeautifulFD(response.text)
